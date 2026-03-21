@@ -10,40 +10,41 @@ const ExpenseForm = ({ fetchExpenses }) => {
   const [type, setType] = useState("expense");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // ✅ validation
-    if (!title || !amount) {
-      alert("Please fill required fields");
-      return;
-    }
+  if (!title || !amount) {
+    alert("Please fill required fields");
+    return;
+  }
 
-    try {
-      await addExpense({
-        title,
-        amount: Number(amount),
-        date: date || new Date(), // ✅ default date
-        category,
-        type,
-      });
+  try {
+    await addExpense({
+      title,
+      amount: Number(amount),
+      date: date || new Date(),
+      category,
+      type,
+    });
 
-      // ✅ clear form
-      setTitle("");
-      setAmount("");
-      setDate("");
-      setCategory("General");
-      setType("expense");
+    // append new expense locally instead of waiting for fetch
+    await fetchExpenses(); // optional: refetch all expenses
+    // OR:
+    // setExpenses(prev => [...prev, newExpense]);
 
-      // ✅ refresh list
-      fetchExpenses();
+    // clear form
+    setTitle("");
+    setAmount("");
+    setDate("");
+    setCategory("General");
+    setType("expense");
 
-      alert("Expense added successfully ✅");
+    alert("Expense added successfully ✅");
 
-    } catch (error) {
-      console.error(error);
-      alert("Failed to add expense ❌");
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Failed to add expense ❌");
+  }
+};
 
   return (
     <form className="expense-form" onSubmit={handleSubmit}>

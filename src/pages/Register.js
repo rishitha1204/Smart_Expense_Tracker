@@ -29,8 +29,11 @@ const Register = () => {
 
       // ✅ Store token + user info if backend returns it
       if (res.data.token) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data));
-      }
+  localStorage.setItem(
+    "userInfo",
+    JSON.stringify({ user: res.data.user, token: res.data.token })
+  );
+}
 
       setMessage(res.data.message || "Registered successfully!");
       setIsSuccess(true);

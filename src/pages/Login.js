@@ -11,34 +11,36 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await fetch(`${BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
-      console.log("LOGIN RESPONSE:", data);
+    const data = await res.json();
 
-      if (res.ok) {
-        // ✅ Save token + user info
-        localStorage.setItem("userInfo", JSON.stringify(data)); // store full response (user + token)
+    if (res.ok) {
+      // ✅ Save token + user info here
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ user: data.user, token: data.token })
+      );
 
-        // ✅ Navigate to dashboard
-        navigate("/dashboard");
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Login failed. Please try again.");
+      // Navigate to dashboard
+      navigate("/dashboard");
+    } else {
+      alert(data.message);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Login failed. Please try again.");
+  }
+};
 
   return (
     <div>

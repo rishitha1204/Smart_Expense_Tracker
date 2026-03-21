@@ -13,14 +13,14 @@ const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
 
   const fetchExpenses = async () => {
-    try {
-      const res = await getExpenses();
-      setExpenses(res.data || []); // ✅ fallback to empty array
-    } catch (error) {
-      console.error("Error fetching expenses:", error);
-      setExpenses([]); // fallback if API fails
-    }
-  };
+  try {
+    const data = await getExpenses(); // getExpenses already returns array
+    setExpenses(data);                // set directly
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+    setExpenses([]);
+  }
+};
 
   useEffect(() => {
     fetchExpenses();
