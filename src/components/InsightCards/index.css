@@ -1,0 +1,36 @@
+.insight-card{
+
+  background:white;
+
+  padding:22px;
+
+  border-radius:16px;
+
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+  transition:0.3s;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.insight-card:hover{
+
+  transform:translateY(-6px);
+
+}
+
+.insight-title{
+  font-size:14px;
+  color:#6b7280;
+}
+
+.insight-value{
+
+  font-size:26px;
+  font-weight:600;
+
+  margin-top:6px;
+
+}
