@@ -3,13 +3,14 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "./auth.css";
 
+// ✅ Use live backend URL
+const BASE_URL = "https://smart-expense-tracker-1-ybx9.onrender.com";
+
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [showPassword, setShowPassword] = useState(false); // 👈 NEW
-
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -19,23 +20,31 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        name,
-        email,
-        password,
-      });
+      // ✅ Updated API URL
+      const res = await axios.post(
+        `${BASE_URL}/api/auth/register`,
+        { name, email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      setMessage(res.data.message);
+      // ✅ Store token + user info if backend returns it
+      if (res.data.token) {
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+      }
+
+      setMessage(res.data.message || "Registered successfully!");
       setIsSuccess(true);
 
+      // Reset form
       setName("");
       setEmail("");
       setPassword("");
 
-      setTimeout(() => navigate("/"), 1500);
+      // Navigate after 1.5s
+      setTimeout(() => navigate("/dashboard"), 1500);
 
     } catch (err) {
-      console.log(err); // 👈 VERY IMPORTANT (see real error in console)
+      console.log(err);
       setMessage(err.response?.data?.message || "Registration failed");
       setIsSuccess(false);
     }
@@ -61,7 +70,6 @@ const Register = () => {
           required
         />
 
-        {/* 👁️ PASSWORD WITH TOGGLE */}
         <div style={{ position: "relative" }}>
           <input
             type={showPassword ? "text" : "password"}

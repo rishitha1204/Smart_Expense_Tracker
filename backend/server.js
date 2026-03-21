@@ -17,7 +17,9 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
-
+app.get("/", (req, res) => {
+  res.send("Smart Expense Tracker Backend is Running!");
+});
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
